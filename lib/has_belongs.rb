@@ -1,5 +1,11 @@
 require "has_belongs/version"
 
 module HasBelongs
-  # Your code goes here...
+  class Test
+
+    def self.hi
+      "Hello"
+    end
+
+  end
 end

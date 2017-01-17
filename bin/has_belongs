@@ -1,0 +1,4 @@
+#!/usr/bin/env ruby
+
+require "has_belongs"
+puts HasBelongs::Test.hi

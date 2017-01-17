@@ -1,4 +1,5 @@
 require "has_belongs/version"
+require "has_belongs/search"
 require "thor"
 
 
@@ -12,11 +13,13 @@ module HasBelongs
     end
 
     desc "migrate ASSOCIATION", "should run a migration command passing in one parameter"
-    def migrate(association)
-      system("touch #{association}")
-      system("bin/rake db:migrate")
-      system("bin/rake db:schema:load")
-      puts "has_belongs ran successfully"
+    def migrate
+    	search = Search.new
+    	output = search.generate_migration
+    	output.each { |element| system(element) }
+    	system("bin/rake db:migrate")
+    	system("bin/rake db:schema:load")
+    	puts "has_belongs ran successfully"
     end
 
   end

@@ -8,7 +8,7 @@ module HasBelongs
 
     desc "install", "should run a command line task"
     def install
-      create_file("my_file.txt")
+      create_file("spec/sandbox/test.txt")
     end
 
   end

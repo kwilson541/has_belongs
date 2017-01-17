@@ -3,9 +3,14 @@ class Search
 	def return_files(filepath = "app/models")
 		if Dir.exist?(filepath)
 			search_path = filepath + "/*.rb"
-			Dir.glob(search_path)
+			search_result = Dir.glob(search_path)
+			if search_result.empty?
+				raise "Could not find any files in #{filepath}"		
+			else
+				search_result		
+			end
 		else
-			raise "Filepath does not exist"
+			raise "#{filepath} does not exist"
 		end
 	end
 
@@ -17,7 +22,11 @@ class Search
 				files_with_has_many << file
 			end
 		end
-		files_with_has_many
+		if files_with_has_many.empty?
+			raise "No associations found"
+		else
+			files_with_has_many
+		end
 	end
 
 end

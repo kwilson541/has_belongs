@@ -4,7 +4,17 @@ describe 'search' do
 
 	it 'raises an error when filepath does not exist' do
 		search = Search.new
-		expect{search.return_files}.to raise_error("Filepath does not exist")
+		expect{search.return_files}.to raise_error("app/models does not exist")
+	end
+
+	it 'raises an error when it cannot find any files in the directory' do
+		search = Search.new
+		expect{search.return_files("spec/test_models_empty")}.to raise_error("Could not find any files in spec/test_models_empty")
+	end
+
+	it 'raises an error if appropriate files do not contains "has_many"' do
+		search = Search.new
+		expect{search.return_has_many("spec/test_models_without_associations")}.to raise_error("No associations found")
 	end
 
 	it 'returns an array of all ruby files in app/models' do

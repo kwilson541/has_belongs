@@ -27,4 +27,9 @@ describe 'search' do
 		expect(search.return_has_many("spec/test_models")).to eq ["spec/test_models/piggy.rb"]
 	end
 
+	it 'returns the Rails generate method for files with "has_many" keyword' do
+		search = Search.new
+		expect(search.generate_migration("spec/test_models")).to eq "bin/rails g migration AddPiggyRefToBacon piggy:references"
+	end
+
 end

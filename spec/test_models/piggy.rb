@@ -1,4 +1,4 @@
-class Piggy
+class Piggy < ApplicationRecord
 
 	has_many :bacons
 

@@ -29,4 +29,32 @@ class Search
 		end
 	end
 
+	def generate_migration(filepath = "apps/models")
+		files = return_has_many(filepath)
+		@class_variable1 = ""
+		@class_variable2 = ""
+		files.each do |file|
+			File.open(file).each_line { |line|
+				class_has(line)
+				class_belongs(line)
+			}
+		end		
+		return "bin/rails g migration Add#{@class_variable1}RefTo#{@class_variable2.capitalize} #{@class_variable1.downcase}:references"
+	end
+
+
+	private
+
+	def class_has(line)		
+		if line =~ /(class).*( < ApplicationRecord)/
+			@class_variable1 = line.gsub(/(class)|( < ApplicationRecord)/, "").strip
+		end
+	end
+
+	def class_belongs(line)
+		if line =~ /(has_many :)/
+			@class_variable2 = line.gsub(/(has_many :)|(s( |,)*.*)/, "").strip
+		end
+	end
+
 end

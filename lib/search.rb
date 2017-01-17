@@ -1,10 +1,15 @@
 class Search
 
-	def return_files(filepath = "**/app/models/*.rb")
-		Dir.glob(filepath)
+	def return_files(filepath = "app/models")
+		if Dir.exist?(filepath)
+			search_path = filepath + "/*.rb"
+			Dir.glob(search_path)
+		else
+			raise "Filepath does not exist"
+		end
 	end
 
-	def return_has_many(filepath = "**/app/models/*.rb")
+	def return_has_many(filepath = "app/models")
 		all_files = return_files(filepath)
 		files_with_has_many = []
 		all_files.each do |file|

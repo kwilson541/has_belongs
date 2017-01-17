@@ -1,0 +1,6 @@
+#!/usr/bin/env ruby
+require "thor"
+require "has_belongs"
+
+# require File.expand_path('../lib/has_belongs/cli', __dir__)
+HasBelongs::Cli.start

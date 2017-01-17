@@ -1,20 +1,19 @@
 require 'spec_helper'
 
-describe HasBelongs::Test do
+describe HasBelongs::Cli do
 
-  it 'should output Hello' do
-    expect(HasBelongs::Test.hi).to eq('Hello')
+  describe 'install' do
+    it "should create a file" do
+      file = "has_belongs/"
+    end
   end
-end
 
-RSpec.describe "first run", :type => :aruba do
-let(:file) { 'file.txt' }
-# file2 = File.open("../LICENSE.txt")
-before(:each) do
-  touch("../" + file)
-  cd ".."
-end
-
-it {expect(file).to be_an_existing_file}
+  it 'should create a file' do
+    HasBelongs::Cli.start install
+    # install
+    file = File.open("/Users/jamesdix/Desktop/week9/has_belongs/spec/spec_helper.rb")
+    content = file.read
+    expect(content).to eq("$LOAD_PATH.unshift File.expand_path(\"../../lib\", __FILE__)\nrequire \"has_belongs\"\n")
+  end
 
 end

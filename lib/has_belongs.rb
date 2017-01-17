@@ -11,5 +11,13 @@ module HasBelongs
       create_file("spec/sandbox/test.txt")
     end
 
+    desc "migrate ASSOCIATION", "should run a migration command passing in one parameter"
+    def migrate(association)
+      system("touch #{association}")
+      system("bin/rake db:migrate")
+      system("bin/rake db:schema:load")
+      puts "has_belongs ran successfully"
+    end
+
   end
 end

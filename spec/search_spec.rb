@@ -29,7 +29,7 @@ describe 'search' do
 
 	it 'returns the Rails generate method for files with "has_many" keyword' do
 		search = Search.new
-		expect(search.generate_migration("spec/test_models")).to eq "bin/rails g migration AddPiggyRefToBacon piggy:references"
+		expect(search.generate_migration("spec/test_models")).to eq ["bin/rails g migration AddPiggyRefToBacon piggy:references"]
 	end
 
 end

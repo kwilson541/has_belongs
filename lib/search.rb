@@ -33,13 +33,15 @@ class Search
 		files = return_has_many(filepath)
 		@class_variable1 = ""
 		@class_variable2 = ""
+		migrations = []
 		files.each do |file|
 			File.open(file).each_line { |line|
 				class_has(line)
 				class_belongs(line)
 			}
+			migrations << "bin/rails g migration Add#{@class_variable1}RefTo#{@class_variable2.capitalize} #{@class_variable1.downcase}:references"
 		end		
-		return "bin/rails g migration Add#{@class_variable1}RefTo#{@class_variable2.capitalize} #{@class_variable1.downcase}:references"
+		migrations
 	end
 
 

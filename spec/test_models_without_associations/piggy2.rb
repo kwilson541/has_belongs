@@ -1,0 +1,2 @@
+class PiggyTwo
+end

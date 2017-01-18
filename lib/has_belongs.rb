@@ -9,7 +9,8 @@ module HasBelongs
 
     desc "install", "should run a command line task"
     def install
-      create_file("spec/sandbox/test.txt")
+      puts set_color "test", :red, :on_white, :bold
+      # create_file("spec/sandbox/test.txt")
     end
 
     desc "migrate", "should run a migration command passing in one parameter"

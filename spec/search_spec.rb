@@ -27,8 +27,16 @@ describe 'search' do
 		expect(search.return_has_many("spec/test_models")).to eq ["spec/test_models/piggy.rb"]
 	end
 
+	it 'returns an array of all ruby files containing "has_one" keyword' do
+		expect(search.return_has_many("spec/test_models_has_one")).to eq ["spec/test_models_has_one/piggy3.rb"]
+	end
+
 	it 'returns the Rails generate method for files with "has_many" keyword' do
 		expect(search.generate_migration("spec/test_models")).to eq ["bin/rails g migration AddPiggyRefToBacon piggy:references"]
+	end
+
+	it 'returns the Rails generate method for files with "has_one" keyword' do
+		expect(search.generate_migration("spec/test_models_has_one")).to eq ["bin/rails g migration AddPiggyRefToTail piggy:references"]
 	end
 
 	it 'returns true if migration exists' do

@@ -39,4 +39,8 @@ describe 'search' do
 		expect(search.relationship_exist?("AddUserRefToComments", "*/test_models_empty/*.rb")).to be false
 	end
 
+	it 'returns multiple generate methods for a single file with multiple "has_many" keywords' do
+		expect(search.generate_migration("spec/test_models_multiple_associations")).to eq ["bin/rails g migration AddPiggyRefToBacon piggy:references", "bin/rails g migration AddPiggyRefToHam piggy:references"]
+	end
+
 end

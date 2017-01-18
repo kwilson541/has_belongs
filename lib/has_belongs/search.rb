@@ -40,17 +40,16 @@ module HasBelongs
 					class_has(line)
 					class_belongs(line)
 				}
-
-				# relationship = "Add#{@class_variable1}RefTo#{@class_variable2.capitalize}"
-				# if !relationship_exist?(relationship)
-					migrations << "bin/rails g migration Add#{@class_variable1}RefTo#{@class_variable2.capitalize} #{@class_variable1.downcase}:references"
-				# end
+				relationship = "Add#{@class_variable1}RefTo#{@class_variable2.capitalize}"
+				if !relationship_exist?(relationship)
+					migrations << "bin/rails g migration #{relationship} #{@class_variable1.downcase}:references"
+				end
 			end
 			migrations
 		end
 
-		def relationship_exist?(relationship, file_path = "db/migrate/*.rb")
-			migration_files = Dir.glob(file_path)
+		def relationship_exist?(relationship, filepath = "db/migrate/*.rb")
+			migration_files = Dir.glob(filepath)
 			migration_files.each do |file|
 				File.open(file).each_line.any? {|line| return true if line.include?(relationship)}
 			end

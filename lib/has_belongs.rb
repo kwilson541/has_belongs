@@ -12,8 +12,9 @@ module HasBelongs
       create_file("spec/sandbox/test.txt")
     end
 
-    desc "migrate ASSOCIATION", "should run a migration command passing in one parameter"
+    desc "migrate", "should run a migration command passing in one parameter"
     def migrate
+      system("bin/rails db:create")
     	search = Search.new
     	output = search.generate_migration
     	output.each { |element| system(element) }

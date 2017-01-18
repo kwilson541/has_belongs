@@ -33,16 +33,18 @@ module HasBelongs
 		def generate_migration(filepath = "app/models")
 			files = return_has_many(filepath)
 			@class_variable1 = ""
-			@class_variable2 = ""
+			@class_variable2 = []
 			migrations = []
 			files.each do |file|
 				File.open(file).each_line { |line|
 					class_has(line)
 					class_belongs(line)
 				}
-				relationship = "Add#{@class_variable1}RefTo#{@class_variable2.capitalize}"
-				if !relationship_exist?(relationship)
-					migrations << "bin/rails g migration #{relationship} #{@class_variable1.downcase}:references"
+				@class_variable2.each do |element| 
+					relationship = "Add#{@class_variable1}RefTo#{element.capitalize}"
+					if !relationship_exist?(relationship)
+						migrations << "bin/rails g migration #{relationship} #{@class_variable1.downcase}:references"
+					end
 				end
 			end
 			migrations
@@ -67,7 +69,7 @@ module HasBelongs
 
 		def class_belongs(line)
 			if line =~ /(has_many :)/
-				@class_variable2 = line.gsub(/(has_many :)|(s( |,)*.*)/, "").strip
+				@class_variable2 << line.gsub(/(has_many :)|(s( |,)*.*)/, "").strip
 			end
 		end
 

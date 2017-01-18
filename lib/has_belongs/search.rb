@@ -1,3 +1,6 @@
+require 'active_support'
+require 'active_support/inflector'
+
 module HasBelongs
 	class Search
 
@@ -19,7 +22,7 @@ module HasBelongs
 			all_files = return_files(filepath)
 			files_with_has_many = []
 			all_files.each do |file|
-				if File.open(file).each_line.any?{|line| line.include?("has_many")}
+				if File.open(file).each_line.any?{|line| line.include?("has_many") || line.include?("has_one")}
 					files_with_has_many << file
 				end
 			end
@@ -40,7 +43,7 @@ module HasBelongs
 					class_has(line)
 					class_belongs(line)
 				}
-				@class_variable2.each do |element| 
+				@class_variable2.each do |element|
 					relationship = "Add#{@class_variable1}RefTo#{element.capitalize}"
 					if !relationship_exist?(relationship)
 						migrations << "bin/rails g migration #{relationship} #{@class_variable1.downcase}:references"
@@ -70,8 +73,9 @@ module HasBelongs
 		end
 
 		def class_belongs(line)
-			if line =~ /(has_many :)/
-				@class_variable2 << line.gsub(/(has_many :)|(s( |,)*.*)/, "").strip
+			if line =~ /(has_many :|has_one :)/
+				words = line.scan(/\w+/)
+				@class_variable2 << ActiveSupport::Inflector.singularize(words[1])
 			end
 		end
 

@@ -45,7 +45,9 @@ module HasBelongs
 					if !relationship_exist?(relationship)
 						migrations << "bin/rails g migration #{relationship} #{@class_variable1.downcase}:references"
 					end
+				@class_variable2 = []
 				end
+			@class_variable1 = ""
 			end
 			migrations
 		end
@@ -72,8 +74,6 @@ module HasBelongs
 				@class_variable2 << line.gsub(/(has_many :)|(s( |,)*.*)/, "").strip
 			end
 		end
-
-
 
 	end
 end

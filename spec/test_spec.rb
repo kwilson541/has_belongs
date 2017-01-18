@@ -9,13 +9,13 @@ describe HasBelongs::Cli do
     end
   end
 
-  it 'should create a file in spec/sandbox' do
-    file = "test.txt"
-    # FileUtils.touch("spec/sandbox/#{file}")
-    expect(File.exist?("spec/sandbox/#{file}")).to be false
-    cli.install
-    expect(File.exist?("spec/sandbox/#{file}")).to be true
-  end
+  # it 'should create a file in spec/sandbox' do
+  #   file = "test.txt"
+  #   # FileUtils.touch("spec/sandbox/#{file}")
+  #   expect(File.exist?("spec/sandbox/#{file}")).to be false
+  #   cli.install
+  #   expect(File.exist?("spec/sandbox/#{file}")).to be true
+  # end
 
 
   # it 'should create a file' do

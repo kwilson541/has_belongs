@@ -6,9 +6,9 @@ module HasBelongs
 				search_path = filepath + "/*.rb"
 				search_result = Dir.glob(search_path)
 				if search_result.empty?
-					raise "Could not find any files in #{filepath}"		
+					raise "Could not find any files in #{filepath}"
 				else
-					search_result		
+					search_result
 				end
 			else
 				raise "#{filepath} does not exist"
@@ -40,15 +40,27 @@ module HasBelongs
 					class_has(line)
 					class_belongs(line)
 				}
-				migrations << "bin/rails g migration Add#{@class_variable1}RefTo#{@class_variable2.capitalize} #{@class_variable1.downcase}:references"
-			end		
+
+				# relationship = "Add#{@class_variable1}RefTo#{@class_variable2.capitalize}"
+				# if !relationship_exist?(relationship)
+					migrations << "bin/rails g migration Add#{@class_variable1}RefTo#{@class_variable2.capitalize} #{@class_variable1.downcase}:references"
+				# end
+			end
 			migrations
+		end
+
+		def relationship_exist?(relationship, file_path = "db/migrate/*.rb")
+			migration_files = Dir.glob(file_path)
+			migration_files.each do |file|
+				File.open(file).each_line.any? {|line| return true if line.include?(relationship)}
+			end
+			return false
 		end
 
 
 		private
 
-		def class_has(line)		
+		def class_has(line)
 			if line =~ /(class).*( < ApplicationRecord)/
 				@class_variable1 = line.gsub(/(class)|( < ApplicationRecord)/, "").strip
 			end
@@ -59,6 +71,8 @@ module HasBelongs
 				@class_variable2 = line.gsub(/(has_many :)|(s( |,)*.*)/, "").strip
 			end
 		end
+
+
 
 	end
 end

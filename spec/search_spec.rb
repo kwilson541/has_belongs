@@ -63,4 +63,8 @@ describe 'search' do
 		expect(search.generate_migration("spec/test_models_habtm")).to eq ["bin/rails g migration CreateJoinTable bacon piggy"]
 	end
 
+	it 'returns only one migration method for each join table' do
+		expect(search.generate_migration("spec/test_models_multiple_habtm")).to eq ["bin/rails g migration CreateJoinTable bacon piggy"]
+	end
+
 end

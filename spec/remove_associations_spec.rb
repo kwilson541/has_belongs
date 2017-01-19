@@ -17,7 +17,11 @@ describe 'remove_assocations' do
   end
 
   it 'checks if file no longer contains a "has_many" relationship' do
-    expect(remove.non_existing_relationships('spec/test_models_with_and_without_associations/', "spec/db_test/schema.rb")). to eq [['spec/test_models_with_and_without_associations/author.rb', "books"]]
+    expect(remove.non_existing_relationships('spec/test_models_with_and_without_associations/', "spec/db_test/schema.rb")).to eq [['spec/test_models_with_and_without_associations/author.rb', "books"]]
+  end
+
+  it 'should raise an error if unmigration is not needed' do
+    expect{remove.non_existing_relationships('spec/test_models_with_associations/', "spec/db_test/schema.rb")}.to raise_error("All files still contain relationships")
   end
 
 

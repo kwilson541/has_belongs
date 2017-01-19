@@ -1,5 +1,6 @@
 require "has_belongs/version"
 require "has_belongs/search"
+require "has_belongs/remove"
 require "thor"
 
 
@@ -18,6 +19,16 @@ module HasBelongs
       system("bin/rails db:create")
     	search = Search.new
     	output = search.generate_migration
+    	output.each { |element| system(element) }
+    	system("bin/rake db:migrate")
+    	system("bin/rake db:schema:load")
+    	puts "has_belongs ran successfully"
+    end
+
+    desc "unmigrate", "should remove your db associations"
+    def unmigrate
+    	remove = Remove.new
+    	output = remove.generate_migration
     	output.each { |element| system(element) }
     	system("bin/rake db:migrate")
     	system("bin/rake db:schema:load")

@@ -51,4 +51,8 @@ describe 'search' do
 		expect(search.generate_migration("spec/test_models_multiple_associations")).to eq ["bin/rails g migration AddPiggyRefToBacon piggy:references", "bin/rails g migration AddPiggyRefToHam piggy:references"]
 	end
 
+	it 'returns a file with "has_and_belongs_to_many" keyword' do
+		expect(search.return_has_many("spec/test_models_habtm")).to eq ["spec/test_models_habtm/bacon.rb"]
+	end
+
 end

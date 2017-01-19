@@ -22,7 +22,7 @@ module HasBelongs
 			all_files = return_files(filepath)
 			files_with_has_many = []
 			all_files.each do |file|
-				if File.open(file).each_line.any?{|line| line.include?("has_many") || line.include?("has_one")}
+				if File.open(file).each_line.any?{|line| line.include?("has_many") || line.include?("has_one") || line.include?("has_and_belongs_to_many")}
 					files_with_has_many << file
 				end
 			end

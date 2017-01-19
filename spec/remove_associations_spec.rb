@@ -23,4 +23,10 @@ describe 'remove_assocations' do
     expect(remove.non_existing_relationships('spec/test_models_with_and_without_associations/')). to eq [['spec/test_models_with_and_without_associations/author.rb', "books"]]
   end
 
+
+  it "will generate the remove commands" do
+    remove = Remove.new
+    expect(remove.generate_migration('spec/test_models_with_and_without_associations/')).to eq(["bin/rails g migration RemoveAuthorRefFromBooks author:references"])
+  end
+
 end

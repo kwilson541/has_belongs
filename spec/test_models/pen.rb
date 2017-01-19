@@ -1,2 +1,0 @@
-class Pen < ApplicationRecord
-end

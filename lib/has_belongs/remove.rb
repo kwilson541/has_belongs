@@ -59,5 +59,47 @@ module HasBelongs
       output
     end
 
+    def find_join_tables(file = "db/schema.rb")
+      join_table_models = []
+      File.open(file) do |file|
+        count = -1
+        file.each_line do |line|
+          count += 1
+          if line.include?("id: false")
+            model_one_line = IO.readlines(file)[count+1]
+            model_two_line = IO.readlines(file)[count+2]
+            model_one = model_one_line.split("\"")[1].gsub(/(_id)/, "")
+            model_two = model_two_line.split("\"")[1].gsub(/(_id)/, "")
+            join_table_models << [model_one, model_two]
+          end
+        end
+      end
+      join_table_models
+    end
+
+    def generate_habtm_remove_migrations(filepath = 'app/models/', file = "db/schema.rb")
+      output = []
+      tables = find_join_tables(file)
+      tables.each do |table|
+        model_one = table[0]
+        model_two = table[1]
+        if habtm_check(model_one, model_two, filepath) && habtm_check(model_two, model_one, filepath)
+          output << "bin/rails g migration RemoveJoinTable #{model_one} #{model_two}"
+        end
+      end
+      output
+    end
+
+    private
+
+    def habtm_check(first, second, filepath)
+      path = filepath + first + '.rb'
+      if File.open(path).each_line.any? do |line|
+          return false if line.include?("has_and_belongs_to_many :#{second}")
+        end
+      end
+      return true
+    end
+
   end
 end

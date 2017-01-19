@@ -20,9 +20,16 @@ describe 'remove_assocations' do
     expect(remove.non_existing_relationships('spec/test_models_with_and_without_associations/', "spec/db_test/schema.rb")). to eq [['spec/test_models_with_and_without_associations/author.rb', "books"]]
   end
 
-
   it "will generate the remove commands" do
     expect(remove.generate_migration('spec/test_models_with_and_without_associations/', "spec/db_test/schema.rb")).to eq(["bin/rails g migration RemoveAuthorRefFromBooks author:references"])
+  end
+
+  it 'can find join table models' do
+    expect(remove.find_join_tables("spec/db_test/schema.rb")).to eq [["book", "page"]]
+  end
+
+  it 'can generate remove commands for removing habtm association' do
+    expect(remove.generate_habtm_remove_migrations("spec/test_models_remove_habtm/", "spec/db_test/schema.rb")).to eq ["bin/rails g migration RemoveJoinTable book page"]
   end
 
 end

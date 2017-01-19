@@ -4,6 +4,14 @@ require 'active_support/inflector'
 module HasBelongs
 	class Search
 
+		def initialize
+			@parent_model = ""
+			@child_models = []
+			@has_and_belongs_child_models = []
+			@migrations = []
+		end
+
+
 		def return_files(filepath = "app/models")
 			if Dir.exist?(filepath)
 				search_path = filepath + "/*.rb"
@@ -22,7 +30,7 @@ module HasBelongs
 			all_files = return_files(filepath)
 			files_with_has_many = []
 			all_files.each do |file|
-				if File.open(file).each_line.any?{|line| line.include?("has_many") || line.include?("has_one")}
+				if File.open(file).each_line.any?{|line| line.include?("has_many") || line.include?("has_one") || line.include?("has_and_belongs_to_many")}
 					files_with_has_many << file
 				end
 			end
@@ -35,24 +43,15 @@ module HasBelongs
 
 		def generate_migration(filepath = "app/models")
 			files = return_has_many(filepath)
-			@class_variable1 = ""
-			@class_variable2 = []
-			migrations = []
 			files.each do |file|
-				File.open(file).each_line { |line|
+				File.open(file).each_line do |line|
 					class_has(line)
 					class_belongs(line)
-				}
-				@class_variable2.each do |element|
-					relationship = "Add#{@class_variable1}RefTo#{element.capitalize}"
-					if !relationship_exist?(relationship)
-						migrations << "bin/rails g migration #{relationship} #{@class_variable1.downcase}:references"
-					end
-				@class_variable2 = []
 				end
-			@class_variable1 = ""
+				add_one_and_many_migrations
+				add_habtm_migrations
 			end
-			migrations
+			@migrations
 		end
 
 		def relationship_exist?(relationship, filepath = "db/migrate/*.rb")
@@ -66,16 +65,40 @@ module HasBelongs
 
 		private
 
+		def add_one_and_many_migrations
+			@child_models.each do |model|
+				relationship = "Add#{@parent_model}RefTo#{model.capitalize}"
+				if !relationship_exist?(relationship)
+					@migrations << "bin/rails g migration #{relationship} #{@parent_model.downcase}:references"
+				end
+				@child_models = []
+			end
+		end
+
+		def add_habtm_migrations
+			@has_and_belongs_child_models.each do |model|
+				relationship_A = "create_join_table :#{@parent_model}, :#{model}"
+				relationship_B = "create_join_table :#{model}, :#{@parent_model}"
+				if !relationship_exist?(relationship_A) && !relationship_exist?(relationship_B)
+					@migrations << "bin/rails g migration CreateJoinTable #{@parent_model.downcase} #{model}"
+				end
+				@parent_model = ""
+			end
+		end
+
 		def class_has(line)
 			if line =~ /(class).*( < ApplicationRecord)/
-				@class_variable1 = line.gsub(/(class)|( < ApplicationRecord)/, "").strip
+				@parent_model = line.gsub(/(class)|( < ApplicationRecord)/, "").strip
 			end
 		end
 
 		def class_belongs(line)
 			if line =~ /(has_many :|has_one :)/
 				words = line.scan(/\w+/)
-				@class_variable2 << ActiveSupport::Inflector.singularize(words[1])
+				@child_models << ActiveSupport::Inflector.singularize(words[1])
+			elsif line =~ /(has_and_belongs_to_many :)/
+				words = line.scan(/\w+/)
+				@has_and_belongs_child_models << ActiveSupport::Inflector.singularize(words[1])
 			end
 		end
 

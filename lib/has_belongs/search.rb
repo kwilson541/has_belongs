@@ -35,22 +35,25 @@ module HasBelongs
 
 		def generate_migration(filepath = "app/models")
 			files = return_has_many(filepath)
-			@class_variable1 = ""
-			@class_variable2 = []
+			@parent_model = ""
+			@child_models = []
+			@has_and_belongs_child_models = []
 			migrations = []
 			files.each do |file|
 				File.open(file).each_line { |line|
 					class_has(line)
 					class_belongs(line)
 				}
-				@class_variable2.each do |element|
-					relationship = "Add#{@class_variable1}RefTo#{element.capitalize}"
+				@child_models.each do |model|
+					relationship = "Add#{@parent_model}RefTo#{model.capitalize}"
 					if !relationship_exist?(relationship)
-						migrations << "bin/rails g migration #{relationship} #{@class_variable1.downcase}:references"
+						migrations << "bin/rails g migration #{relationship} #{@parent_model.downcase}:references"
 					end
-				@class_variable2 = []
+				@child_models = []
 				end
-			@class_variable1 = ""
+				@has_and_belongs_child_models.each do |model|
+					relationship = "CreateJoinTable "
+			@parent_model = ""
 			end
 			migrations
 		end
@@ -68,14 +71,17 @@ module HasBelongs
 
 		def class_has(line)
 			if line =~ /(class).*( < ApplicationRecord)/
-				@class_variable1 = line.gsub(/(class)|( < ApplicationRecord)/, "").strip
+				@parent_model = line.gsub(/(class)|( < ApplicationRecord)/, "").strip
 			end
 		end
 
 		def class_belongs(line)
 			if line =~ /(has_many :|has_one :)/
 				words = line.scan(/\w+/)
-				@class_variable2 << ActiveSupport::Inflector.singularize(words[1])
+				@child_models << ActiveSupport::Inflector.singularize(words[1])
+			elsif line =~ /(has_and_belongs_to_many :)/
+				words = line.scan(/\w+/)
+				@has_and_belongs_child_models << ActiveSupport::Inflector.singularize(words[1])
 			end
 		end
 

@@ -55,4 +55,8 @@ describe 'search' do
 		expect(search.return_has_many("spec/test_models_habtm")).to eq ["spec/test_models_habtm/bacon.rb"]
 	end
 
+	it 'returns migration method for a join table' do
+		expect(search.generate_migration("spec/test_models_habtm")).to eq ["bin/rails g migration CreateJoinTable bacon piggy"]
+	end
+
 end

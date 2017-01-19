@@ -20,11 +20,11 @@ describe 'search' do
 	end
 
 	it 'returns an array of all ruby files in app/models' do
-		expect(search.return_files("spec/test_models")).to eq ["spec/test_models/bacon.rb", "spec/test_models/piggy.rb"]
+		expect(search.return_files("spec/test_models")).to eq ["spec/test_models/author.rb", "spec/test_models/bacon.rb", "spec/test_models/book.rb", "spec/test_models/page.rb", "spec/test_models/pen.rb", "spec/test_models/piggy.rb"]
 	end
 
 	it 'returns an array of all ruby files containing "has_many" keyword' do
-		expect(search.return_has_many("spec/test_models")).to eq ["spec/test_models/piggy.rb"]
+		expect(search.return_has_many("spec/test_models")).to eq ["spec/test_models/author.rb", "spec/test_models/book.rb", "spec/test_models/piggy.rb"]
 	end
 
 	it 'returns an array of all ruby files containing "has_one" keyword' do

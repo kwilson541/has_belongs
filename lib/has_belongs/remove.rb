@@ -21,6 +21,7 @@ module HasBelongs
         child_parent = word_array.values_at(* word_array.each_index.select { |item| item.odd? })
         child_parent_array << child_parent
       end
+
       child_parent_array
     end
 
@@ -32,6 +33,7 @@ module HasBelongs
         file_path = filepath + singularized_parent + '.rb'
         files_hash[file_path] = relationship[0]
       end
+
       files_hash
     end
 
@@ -40,10 +42,13 @@ module HasBelongs
       model_files = set_parent_file(filepath, file)
       model_files.each do |file, child|
         if !File.open(file).each_line.any? do |line|
-          line.include?("has_many :#{child}")
+          line.include?("has_many :#{child}") || line.include?("has_one :#{child}")
           end
           deleted_relationships << [file, child]
         end
+      end
+      if deleted_relationships.empty?
+        raise "All files still contain relationships"
       end
       deleted_relationships
     end

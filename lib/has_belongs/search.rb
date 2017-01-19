@@ -50,8 +50,9 @@ module HasBelongs
 				end
 				add_one_and_many_migrations
 				add_habtm_migrations
+				@parent_model = ""
 			end
-			@migrations
+			@migrations.uniq
 		end
 
 		def relationship_exist?(relationship, filepath = "db/migrate/*.rb")
@@ -80,9 +81,10 @@ module HasBelongs
 				relationship_A = "create_join_table :#{@parent_model}, :#{model}"
 				relationship_B = "create_join_table :#{model}, :#{@parent_model}"
 				if !relationship_exist?(relationship_A) && !relationship_exist?(relationship_B)
-					@migrations << "bin/rails g migration CreateJoinTable #{@parent_model.downcase} #{model}"
+					sort_models = [@parent_model.downcase, model].sort!
+					@migrations << "bin/rails g migration CreateJoinTable #{sort_models[0]} #{sort_models[1]}"
 				end
-				@parent_model = ""
+				@has_and_belongs_child_models = []
 			end
 		end
 

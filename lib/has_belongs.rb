@@ -24,6 +24,8 @@ module HasBelongs
     	remove = Remove.new
     	output = remove.generate_migration
     	output.each { |element| system(element) }
+        output = remove.generate_habtm_remove_migrations
+        output.each { |element| system(element) }
     	system("bin/rake db:migrate")
     	system("bin/rake db:schema:load")
     	puts set_color "has_belongs unmigrate ran successfully", :white, :on_greend, :bold

@@ -21,30 +21,28 @@ module HasBelongs
         child_parent = word_array.values_at(* word_array.each_index.select { |item| item.odd? })
         child_parent_array << child_parent
       end
-
       child_parent_array
     end
 
     def set_parent_file(filepath = 'app/models/', file = "db/schema.rb")
-      files_hash = {}
+      files_array = []
       relationships = find_models_in_schema(file)
       relationships.each do |relationship|
         singularized_parent = ActiveSupport::Inflector.singularize(relationship[1])
         file_path = filepath + singularized_parent + '.rb'
-        files_hash[file_path] = relationship[0]
+        files_array << [file_path, relationship[0]]
       end
-
-      files_hash
+      files_array
     end
 
     def non_existing_relationships(filepath = 'app/models/', file = "db/schema.rb")
       deleted_relationships = []
       model_files = set_parent_file(filepath, file)
-      model_files.each do |file, child|
-        if !File.open(file).each_line.any? do |line|
-          line.include?("has_many :#{child}") || line.include?("has_one :#{child}")
+      model_files.each do |file|
+        if !File.open(file[0]).each_line.any? do |line|
+          line.include?("has_many :#{file[1]}") || line.include?("has_one :#{file[1]}")
           end
-          deleted_relationships << [file, child]
+          deleted_relationships << [file[0], file[1]]
         end
       end
       if deleted_relationships.empty?

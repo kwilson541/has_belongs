@@ -25,11 +25,11 @@ describe 'remove_assocations' do
   end
 
   it 'should raise an error if unmigration is not needed' do
-    expect{remove.non_existing_relationships('spec/test_models_with_associations/', "spec/db_test/schema.rb")}.to raise_error("All files still contain relationships")
+    expect{remove.remove_migrations('spec/test_models_with_associations/', "spec/db_test/schema.rb")}.to raise_error("All files still contain relationships")
   end
 
   it "will generate the remove commands" do
-    expect(remove.generate_migration('spec/test_models_with_and_without_associations/', "spec/db_test/schema.rb")).to eq(["bin/rails g migration RemoveAuthorRefFromBooks author:references"])
+    expect(remove.generate_has_and_one_remove_migrations('spec/test_models_with_and_without_associations/', "spec/db_test/schema.rb")).to eq(["bin/rails g migration RemoveAuthorRefFromBooks author:references"])
   end
 
   it 'can find join table models' do

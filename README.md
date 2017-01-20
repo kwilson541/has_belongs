@@ -46,6 +46,7 @@ With both commands, the gem you will create relevant migration files in `db/migr
 - As highlighted above, this gem is specifically for use with Rails and PostgreSQL. As far as we are aware, it will not run as expected if other databases are used.
 - All models must be created through the command line prior to setting your associations and prior to running `has_belongs migrate` or `has_belongs unmigrate`.
 - Due to the way Rails works, it is not currently possible to create an association, run `has_belongs migrate`, then remove that association and run `has_belongs unmigrate` and then create the exact same association.
+- Also as far as we understand Rails and the interaction of our gem, it seems we can create joined tables but they cannot be removed.
 
 
 ## Contributing

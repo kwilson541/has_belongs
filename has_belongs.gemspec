@@ -7,7 +7,7 @@ Gem::Specification.new do |spec|
   spec.name          = "has_belongs"
   spec.version       = HasBelongs::VERSION
   spec.authors       = ["Dines Poulsen, Kim Wilson, Mike Hurl, James Dix"]
-  spec.email         = ["dinespoulsen84@gmail.com, mikehurl@gmail.com, k.wilson541@gmail.com, jamesdix@cwgsy.net"]
+  spec.email         = ["dinespoulsen84@gmail.com, k.wilson541@gmail.com, mikehurl@gmail.com, jamesdix@cwgsy.net"]
 
   spec.summary       = %q{Rails migration automation}
   spec.description   = %q{A Rails gem that automates associations by creating the model migrations and updates the db and schema.}

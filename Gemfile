@@ -6,3 +6,4 @@ gemspec
 gem "thor"
 gem "pry"
 gem 'activesupport'
+gem 'coveralls', require: false

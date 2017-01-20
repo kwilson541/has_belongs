@@ -25,7 +25,7 @@ describe 'remove_assocations' do
   end
 
   it 'should raise an error if unmigration is not needed' do
-    expect{remove.non_existing_relationships('spec/test_models_with_associations/', "spec/db_test/schema.rb")}.to raise_error("All files still contain relationships")
+    expect{remove.remove_migrations('spec/test_models_with_associations/', "spec/db_test/schema.rb")}.to raise_error("All files still contain relationships")
   end
 
   it "will generate the remove commands" do

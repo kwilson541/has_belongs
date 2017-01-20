@@ -45,9 +45,6 @@ module HasBelongs
           deleted_relationships << [file[0], file[1]]
         end
       end
-      if deleted_relationships.empty?
-        raise "All files still contain relationships"
-      end
       deleted_relationships
     end
 
@@ -66,6 +63,9 @@ module HasBelongs
       migrations = []
       migrations << generate_has_and_one_remove_migrations(filepath, file)
       migrations << generate_habtm_remove_migrations(filepath, file)
+      if migrations.flatten.empty?
+        raise "All files still contain relationships"
+      end
       migrations.flatten
     end
 

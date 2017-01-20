@@ -28,7 +28,7 @@ module HasBelongs
         output.each { |element| system(element) }
     	system("bin/rake db:migrate")
     	system("bin/rake db:schema:load")
-    	puts set_color "has_belongs unmigrate ran successfully", :white, :on_greend, :bold
+    	puts set_color "has_belongs unmigrate ran successfully", :white, :on_green, :bold
     end
 
     desc "help", "provides documentation and information about this gem"

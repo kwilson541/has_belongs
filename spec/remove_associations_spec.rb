@@ -29,7 +29,7 @@ describe 'remove_assocations' do
   end
 
   it "will generate the remove commands" do
-    expect(remove.generate_migration('spec/test_models_with_and_without_associations/', "spec/db_test/schema.rb")).to eq(["bin/rails g migration RemoveAuthorRefFromBooks author:references"])
+    expect(remove.generate_has_and_one_remove_migrations('spec/test_models_with_and_without_associations/', "spec/db_test/schema.rb")).to eq(["bin/rails g migration RemoveAuthorRefFromBooks author:references"])
   end
 
   it 'can find join table models' do

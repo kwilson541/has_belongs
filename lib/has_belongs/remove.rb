@@ -51,7 +51,7 @@ module HasBelongs
       deleted_relationships
     end
 
-    def generate_migration(filepath = 'app/models/', file = "db/schema.rb")
+    def generate_has_and_one_remove_migrations(filepath = 'app/models/', file = "db/schema.rb")
       output = []
       remove_relationships = non_existing_relationships(filepath, file)
       remove_relationships.each do |relationship|
@@ -60,6 +60,13 @@ module HasBelongs
         output << "bin/rails g migration Remove#{parent.capitalize}RefFrom#{relationship[1].capitalize} #{parent}:references"
       end
       output
+    end
+
+    def remove_migrations(filepath = 'app/models/', file = "db/schema.rb")
+      migrations = []
+      migrations << generate_has_and_one_remove_migrations(filepath, file)
+      migrations << generate_habtm_remove_migrations(filepath, file)
+      migrations.flatten
     end
 
     def find_join_tables(file = "db/schema.rb")

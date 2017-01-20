@@ -11,7 +11,7 @@ Gem::Specification.new do |spec|
 
   spec.summary       = %q{Rails migration automation}
   spec.description   = %q{A Rails gem that automates associations by creating the model migrations and updates the db and schema.}
-  spec.homepage      = ""
+  spec.homepage      = "https://github.com/kwilson541/has_belongs"
   spec.license       = "MIT"
 
   # Prevent pushing this gem to RubyGems.org. To allow pushes either set the 'allowed_push_host'

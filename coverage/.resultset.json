@@ -277,7 +277,7 @@
         null,
         null
       ],
-      "/Users/KimWilson/Projects/has_belongs/spec/remove_associations_spec.rb": [
+      "/Users/KimWilson/Projects/has_belongs/spec/remove_spec.rb": [
         1,
         null,
         1,
@@ -322,9 +322,6 @@
         null,
         null
       ],
-      "/Users/KimWilson/Projects/has_belongs/spec/test_migrations_spec.rb": [
-
-      ],
       "/Users/KimWilson/Projects/has_belongs/spec/test_spec.rb": [
         1,
         null,
@@ -356,6 +353,6 @@
         null
       ]
     },
-    "timestamp": 1485687380
+    "timestamp": 1485689113
   }
 }

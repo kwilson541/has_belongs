@@ -2,7 +2,7 @@ require 'active_support'
 require 'active_support/inflector'
 
 module HasBelongs
-	class Search
+	class Add
 
 		def initialize
 			@parent_model = ""

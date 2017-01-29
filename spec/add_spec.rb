@@ -28,7 +28,7 @@ describe 'add' do
 	end
 
 	it 'returns an array of all ruby files containing "has_one" keyword' do
-		expect(add.return_has_many("spec/test_models/has_one")).to eq ["spec/test_models/has_one/piggy3.rb"]
+		expect(add.return_has_many("spec/test_models/has_one")).to eq ["spec/test_models/has_one/piggy.rb"]
 	end
 
 	it 'returns the Rails generate method for files with "has_many" keyword' do

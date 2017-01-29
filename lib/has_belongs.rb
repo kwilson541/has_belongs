@@ -1,5 +1,5 @@
 require "has_belongs/version"
-require "has_belongs/search"
+require "has_belongs/add"
 require "has_belongs/remove"
 require "thor"
 
@@ -11,8 +11,8 @@ module HasBelongs
     desc "migrate", "runs a migration for when you have added associations to your models"
     def migrate
       system("bin/rails db:create")
-      search = Search.new
-      output = search.generate_migration
+      add = Add.new
+      output = add.generate_migration
       output.each { |element| system(element) }
       system("bin/rake db:migrate")
       system("bin/rake db:schema:load")
